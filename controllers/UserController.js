@@ -1,5 +1,6 @@
-/*Importin */
-import generateJwtToken from "../config/JWT_AUTH.js";
+/*Importing */
+import jwt from "jsonwebtoken";
+const secretKey = process.env.SECRETE_KEY;
 import UserModel from "../models/UserModel.js";
 import bcryptJs from "bcryptjs";
 
@@ -89,11 +90,17 @@ const UserAccountLogin = async (req, res, next) => {
         message: "Incorrect Password Try Again !",
       });
     }
-    // Create a token for authentication with expires Time
-    const token = await generateJwtToken(
-      userExists._id,
-      userExists.name,
-      userExists.email
+     // Create a token for authentication with expires Time
+    const token = await jwt.sign(
+      {
+        userId: userExists._id,
+        name: userExists.name,
+        email:  userExists.email,
+      },
+      secretKey,
+      {
+        expiresIn: '7d',
+      }
     );
     return res.json({
       status: true,
