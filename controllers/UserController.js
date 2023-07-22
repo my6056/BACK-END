@@ -1,7 +1,6 @@
 /*Importing */
 import jwt from "jsonwebtoken";
-const secretKey = process.env.SECRETE_KEY;
-console.log("Secret Key :" , secretKey);
+const secretKey = process.env.SECRETE_KEY || "CBRRV387G4348R2J";
 import UserModel from "../models/UserModel.js";
 import bcryptJs from "bcryptjs";
 
