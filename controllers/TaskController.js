@@ -170,26 +170,18 @@ const UpdateTask = async (req, res, next) => {
 };
 
 /* DELETE THE TASK*/
-
 const DeleteTask = async (req, res, next) => {
   try {
     // Extract the task ID from the request parameters
     const { taskId } = req.params;
 
     // Find the task with the provided ID in the database
-    const existingTask = await TaskModel.findById(taskId);
+    const existingTask = await TaskModel.findByIdAndDelete(taskId);
 
     // Check if the task exists
     if (!existingTask) {
       return res.json({ status: false, message: "Task not found." });
     }
-
-    // Delete the task from the database
-    await existingTask.remove();
-    // remove the task ID from the user's tasks array in the UserModel (if tasks are associated with users)
-    const user = await UserModel.findById(existingTask.user);
-    user.tasks.pull(existingTask._id);
-    await user.save();
 
     // Return a success message as a response
     return res.json({ status: true, message: "Task deleted successfully." });
